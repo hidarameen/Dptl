@@ -541,6 +541,7 @@ class DownloadService:
             title=info['title'],
             duration=info['duration'],
             quality=quality,
+            metadata=info
             extra_metadata=info
         )
         

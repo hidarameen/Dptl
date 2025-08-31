@@ -8,7 +8,7 @@ from datetime import datetime
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import (
-    FloodWait, UserDeactivated, ChatWriteForbidden,
+    FloodWait, UserBlocked, UserDeactivated, ChatWriteForbidden,
     MessageNotModified, MessageIdInvalid, MessageDeleteForbidden,
     BadRequest, Unauthorized, Forbidden, RPCError
 )

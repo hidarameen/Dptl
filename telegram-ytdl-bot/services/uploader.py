@@ -399,7 +399,7 @@ class ChunkedUploader:
     
     def _prepare_caption(self, download_info: Any, file_size: int) -> str:
         """Prepare caption for uploaded file"""
-        metadata = download_info.metadata or {}
+        metadata = download_info.extra_metadata or {}
         
         caption = f"📹 **{download_info.title or 'Unknown'}**\n\n"
         

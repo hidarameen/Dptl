@@ -10,8 +10,7 @@ from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import (
     FloodWait, UserBlocked, UserDeactivated, ChatWriteForbidden,
     MessageNotModified, MessageIdInvalid, MessageDeleteForbidden,
-    BadRequest, Unauthorized, Forbidden, NotFound,
-    RPCError
+    BadRequest, Unauthorized, Forbidden, RPCError
 )
 
 # Compatibility alias: Some Pyrogram versions use UserIsBlocked instead of UserBlocked

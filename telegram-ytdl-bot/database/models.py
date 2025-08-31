@@ -121,7 +121,6 @@ class Download(Base):
     retry_count = Column(Integer, default=0)
     
     # Additional metadata
-    metadata = Column(JSON, default={})
     extra_metadata = Column(JSON, default={})
     
     # Relationships
@@ -160,7 +159,6 @@ class Payment(Base):
     completed_at = Column(DateTime, nullable=True)
     
     # Additional data
-    metadata = Column(JSON, default={})
     extra_metadata = Column(JSON, default={})
 
     

@@ -4,7 +4,6 @@ Redis cache manager for the bot
 import json
 import pickle
 from typing import Any, Optional, Union, List, Dict
-from datetime import timedelta
 import redis.asyncio as redis
 from redis.asyncio.lock import Lock
 import logging

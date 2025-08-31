@@ -1,8 +1,6 @@
 """
 Start command and basic handlers
 """
-import re
-from typing import Optional
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import logging

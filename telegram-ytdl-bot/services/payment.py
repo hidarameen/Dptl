@@ -1,12 +1,9 @@
 """
 Payment and subscription service
 """
-import asyncio
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
 import logging
-import hashlib
-import json
 from pyrogram import Client
 from pyrogram.types import (
     Message, CallbackQuery, LabeledPrice,
@@ -15,7 +12,6 @@ from pyrogram.types import (
 
 from config import settings, PLANS
 from database.manager import db_manager
-from database.models import PaymentStatus
 from utils.cache import cache_manager
 from utils.errors import PaymentError
 

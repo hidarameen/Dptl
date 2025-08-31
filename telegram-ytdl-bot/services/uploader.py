@@ -6,7 +6,6 @@ import asyncio
 import aiofiles
 from typing import Optional, Dict, Any, Callable, BinaryIO
 from datetime import datetime
-from pathlib import Path
 import logging
 import hashlib
 import mimetypes
@@ -317,7 +316,6 @@ class ChunkedUploader:
     async def _get_video_metadata(self, file_path: str) -> Dict[str, Any]:
         """Extract video metadata"""
         try:
-            import subprocess
             import json
             
             cmd = [

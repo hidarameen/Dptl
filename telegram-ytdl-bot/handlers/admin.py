@@ -12,7 +12,6 @@ from pyrogram.types import (
 import logging
 import matplotlib.pyplot as plt
 import io
-import os
 
 from middleware.auth import require_admin
 from database.manager import db_manager

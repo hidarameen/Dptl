@@ -9,10 +9,8 @@ from typing import Optional, Dict, Any, Callable, List
 from datetime import datetime
 import yt_dlp
 import aria2p
-import aiofiles
 from pathlib import Path
 import logging
-import json
 
 from config import settings, PLANS
 from database.manager import db_manager
@@ -328,7 +326,6 @@ class Aria2Downloader:
         """Initialize Aria2 connection"""
         try:
             # Parse RPC URL
-            import urllib.parse
             parsed = urllib.parse.urlparse(settings.aria2_rpc_url)
             
             self.aria2 = aria2p.API(

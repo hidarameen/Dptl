@@ -237,4 +237,3 @@ def handle_errors(func):
             await ErrorHandler.handle_error(e, client, update, context)
     
     return wrapper
-    return wrapper

@@ -3,7 +3,15 @@ Bot configuration module
 """
 from typing import List, Optional
 from pydantic_settings import BaseSettings
-from pydantic import Field, validator
+from pydantic import Field
+try:
+    # Pydantic v2
+    from pydantic import field_validator
+    USE_V2 = True
+except Exception:
+    # Fallback for Pydantic v1
+    from pydantic import validator as field_validator  # type: ignore
+    USE_V2 = False
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -69,17 +77,31 @@ class Settings(BaseSettings):
     download_workers: int = Field(3, env='DOWNLOAD_WORKERS')
     upload_workers: int = Field(3, env='UPLOAD_WORKERS')
     
-    @validator('admin_ids', 'required_channels', pre=True)
-    def parse_comma_separated_ids(cls, v):
-        if isinstance(v, str):
-            return [int(id.strip()) for id in v.split(',') if id.strip()]
-        return v
+    if USE_V2:
+        @field_validator('admin_ids', 'required_channels', mode='before')
+        def parse_comma_separated_ids(cls, v):
+            if isinstance(v, str):
+                return [int(id.strip()) for id in v.split(',') if id.strip()]
+            return v
+    else:
+        @field_validator('admin_ids', 'required_channels', pre=True)
+        def parse_comma_separated_ids(cls, v):  # type: ignore
+            if isinstance(v, str):
+                return [int(id.strip()) for id in v.split(',') if id.strip()]
+            return v
     
-    @validator('bot_mode')
-    def validate_bot_mode(cls, v):
-        if v not in ['polling', 'webhook']:
-            raise ValueError('bot_mode must be either "polling" or "webhook"')
-        return v
+    if USE_V2:
+        @field_validator('bot_mode')
+        def validate_bot_mode(cls, v):
+            if v not in ['polling', 'webhook']:
+                raise ValueError('bot_mode must be either "polling" or "webhook"')
+            return v
+    else:
+        @field_validator('bot_mode')  # type: ignore
+        def validate_bot_mode(cls, v):
+            if v not in ['polling', 'webhook']:
+                raise ValueError('bot_mode must be either "polling" or "webhook"')
+            return v
     
     @property
     def max_file_size_bytes(self) -> int:

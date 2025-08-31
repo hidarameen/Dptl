@@ -6,7 +6,16 @@ from typing import Callable, Any, Optional, List
 from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors import UserNotParticipant, ChatAdminRequired
+from pyrogram.errors import ChatAdminRequired
+try:
+    from pyrogram.errors import UserNotParticipant
+except Exception:
+    try:
+        # Some versions use generic BadRequest with specific message; keep alias for clarity
+        from pyrogram.errors import BadRequest as UserNotParticipant  # type: ignore
+    except Exception:
+        class UserNotParticipant(Exception):
+            pass
 import logging
 
 from database.manager import db_manager

@@ -11,6 +11,7 @@ import yt_dlp
 import aria2p
 from pathlib import Path
 import logging
+import urllib.parse
 
 from config import settings, PLANS
 from database.manager import db_manager

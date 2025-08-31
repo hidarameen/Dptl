@@ -542,7 +542,6 @@ class DownloadService:
             duration=info['duration'],
             quality=quality,
             extra_metadata=info
-            extra_metadata=info
         )
         
         # Add to queue based on priority

@@ -6,7 +6,13 @@ import logging
 import signal
 import sys
 from pyrogram import Client, idle
-from pyrogram.errors import ApiIdInvalid, AccessTokenInvalid
+try:
+    from pyrogram.errors import ApiIdInvalid, AccessTokenInvalid
+except Exception:
+    class ApiIdInvalid(Exception):
+        pass
+    class AccessTokenInvalid(Exception):
+        pass
 
 from config import settings
 from database.manager import db_manager

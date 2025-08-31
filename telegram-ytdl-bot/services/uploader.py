@@ -11,7 +11,13 @@ import hashlib
 import mimetypes
 from pyrogram import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors import FilePartMissing, FileIdInvalid
+try:
+    from pyrogram.errors import FilePartMissing, FileIdInvalid
+except Exception:
+    class FilePartMissing(Exception):
+        pass
+    class FileIdInvalid(Exception):
+        pass
 import psutil
 
 from config import settings

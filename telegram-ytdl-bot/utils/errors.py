@@ -38,27 +38,22 @@ class BotError(Exception):
 
 
 class DownloadError(BotError):
-    """Download related errors"""
     pass
 
 
 class UploadError(BotError):
-    """Upload related errors"""
     pass
 
 
 class PaymentError(BotError):
-    """Payment related errors"""
     pass
 
 
 class ValidationError(BotError):
-    """Validation errors"""
     pass
 
 
 class QuotaExceededError(BotError):
-    """Quota exceeded errors"""
     pass
 
 
@@ -108,33 +103,27 @@ class ErrorHandler:
         elif isinstance(error, ChatWriteForbidden):
             await ErrorHandler._handle_chat_write_forbidden(update)
         elif isinstance(error, MessageNotModified):
-            # Ignore this error
             return
         elif isinstance(error, (MessageIdInvalid, MessageDeleteForbidden)):
-            # Log but don't notify user
             return
         elif isinstance(error, (Unauthorized, Forbidden)):
             await ErrorHandler._handle_unauthorized(update)
-        elif isinstance(error, ServerError):
-            await ErrorHandler._handle_server_error(update)
-        elif isinstance(error, NetworkError):
-            await ErrorHandler._handle_network_error(update)
         elif isinstance(error, BotError):
             await ErrorHandler._handle_bot_error(error, update)
+        elif isinstance(error, RPCError):
+            await ErrorHandler._handle_generic_error(error, update, error_id)
         else:
             await ErrorHandler._handle_generic_error(error, update, error_id)
         
         # Notify admins for critical errors
-        if isinstance(error, (ServerError, NetworkError)) or \
+        if isinstance(error, RPCError) or \
            (isinstance(error, BotError) and not isinstance(error, ValidationError)):
             await ErrorHandler._notify_admins(error, error_id, user_id, context)
     
     @staticmethod
     async def _handle_flood_wait(error: FloodWait, update: Optional[Any]) -> None:
-        """Handle flood wait errors"""
         wait_time = error.value
         message = f"⏱ تم تجاوز حد الطلبات. الرجاء الانتظار {wait_time} ثانية."
-        
         if update:
             if isinstance(update, Message):
                 await update.reply_text(message)
@@ -143,49 +132,21 @@ class ErrorHandler:
     
     @staticmethod
     async def _handle_user_blocked(user_id: Optional[int]) -> None:
-        """Handle user blocked bot"""
         if user_id:
             await db_manager.update_user(user_id, status='blocked')
     
     @staticmethod
     async def _handle_user_deactivated(user_id: Optional[int]) -> None:
-        """Handle user deactivated"""
         if user_id:
             await db_manager.update_user(user_id, status='deactivated')
     
     @staticmethod
     async def _handle_chat_write_forbidden(update: Optional[Any]) -> None:
-        """Handle chat write forbidden"""
-        # Bot can't write in the chat, log it
         logger.warning(f"Chat write forbidden in chat: {update.chat.id if update and hasattr(update, 'chat') else 'Unknown'}")
     
     @staticmethod
     async def _handle_unauthorized(update: Optional[Any]) -> None:
-        """Handle unauthorized errors"""
         message = "⛔️ غير مصرح لك بتنفيذ هذا الإجراء."
-        
-        if update:
-            if isinstance(update, Message):
-                await update.reply_text(message)
-            elif isinstance(update, CallbackQuery):
-                await update.answer(message, show_alert=True)
-    
-    @staticmethod
-    async def _handle_server_error(update: Optional[Any]) -> None:
-        """Handle server errors"""
-        message = "🔧 حدث خطأ في الخادم. نعمل على حل المشكلة."
-        
-        if update:
-            if isinstance(update, Message):
-                await update.reply_text(message)
-            elif isinstance(update, CallbackQuery):
-                await update.answer(message, show_alert=True)
-    
-    @staticmethod
-    async def _handle_network_error(update: Optional[Any]) -> None:
-        """Handle network errors"""
-        message = "🌐 حدث خطأ في الشبكة. حاول مرة أخرى لاحقاً."
-        
         if update:
             if isinstance(update, Message):
                 await update.reply_text(message)
@@ -194,9 +155,7 @@ class ErrorHandler:
     
     @staticmethod
     async def _handle_bot_error(error: BotError, update: Optional[Any]) -> None:
-        """Handle custom bot errors"""
         message = error.user_message
-        
         if update:
             if isinstance(update, Message):
                 await update.reply_text(message)
@@ -205,9 +164,7 @@ class ErrorHandler:
     
     @staticmethod
     async def _handle_generic_error(error: Exception, update: Optional[Any], error_id: float) -> None:
-        """Handle generic errors"""
         message = f"❌ حدث خطأ غير متوقع.\nرقم الخطأ: {int(error_id)}"
-        
         if update:
             if isinstance(update, Message):
                 await update.reply_text(message)
@@ -221,9 +178,6 @@ class ErrorHandler:
         user_id: Optional[int],
         context: Optional[Dict[str, Any]]
     ) -> None:
-        """Notify admins about critical errors"""
-        # This would be implemented to send notifications to admin users
-        # For now, just log it
         logger.critical(
             f"Critical error requiring admin attention:\n"
             f"Error ID: {error_id}\n"
@@ -245,5 +199,4 @@ def handle_errors(func):
                 'kwargs': str(kwargs)
             }
             await ErrorHandler.handle_error(e, client, update, context)
-    
     return wrapper

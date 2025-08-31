@@ -10,7 +10,7 @@ from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import (
     FloodWait, UserBlocked, UserDeactivated, ChatWriteForbidden,
     MessageNotModified, MessageIdInvalid, MessageDeleteForbidden,
-    BadRequest, Unauthorized, Forbidden, NotFound, Conflict,
+    BadRequest, Unauthorized, Forbidden, RPCError, Conflict,
     ServerError, NetworkError
 )
 

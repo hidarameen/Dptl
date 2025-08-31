@@ -3,6 +3,7 @@ Download handlers
 """
 import re
 import asyncio
+import base64
 from typing import Optional, List, Dict, Any
 from pyrogram import Client, filters
 from pyrogram.types import (
@@ -463,13 +464,11 @@ def create_progress_bar(percentage: float, length: int = 20) -> str:
 
 def encode_url(url: str) -> str:
     """Encode URL for callback data"""
-    import base64
     return base64.urlsafe_b64encode(url.encode()).decode().rstrip('=')
 
 
 def decode_url(encoded: str) -> str:
     """Decode URL from callback data"""
-    import base64
     # Add padding if needed
     padding = 4 - len(encoded) % 4
     if padding != 4:

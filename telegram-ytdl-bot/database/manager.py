@@ -1,12 +1,10 @@
 """
 Database manager for handling database operations
 """
-import asyncio
 from typing import Optional, List, Dict, Any, Tuple
 from datetime import datetime, timedelta
 from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.orm import selectinload
 from sqlalchemy import select, update, delete, and_, or_, func, desc
 from sqlalchemy.exc import IntegrityError
 import logging

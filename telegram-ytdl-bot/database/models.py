@@ -1,7 +1,6 @@
 """
 Database models for the bot
 """
-from datetime import datetime
 from typing import Optional, List
 from sqlalchemy import (
     Column, Integer, String, DateTime, Boolean, Float,

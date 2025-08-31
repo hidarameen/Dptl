@@ -8,10 +8,10 @@ from datetime import datetime
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import (
-    FloodWait, UserDeactivated, ChatWriteForbidden,
+    FloodWait, UserBlocked, UserDeactivated, ChatWriteForbidden,
     MessageNotModified, MessageIdInvalid, MessageDeleteForbidden,
-    BadRequest, Unauthorized, Forbidden, Conflict,
-    RPCError, ServerError, NetworkError
+    BadRequest, Unauthorized, Forbidden, NotFound,
+    RPCError
 )
 
 # Compatibility alias: Some Pyrogram versions use UserIsBlocked instead of UserBlocked

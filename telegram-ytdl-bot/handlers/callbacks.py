@@ -187,12 +187,6 @@ async def select_plan_callback(client: Client, callback: CallbackQuery):
     
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton(
-                f"💳 دفع ${plan['price']}",
-                callback_data=f"pay_{plan_key}"
-            )
-        ],
-        [
             InlineKeyboardButton("🔙 رجوع", callback_data="show_plans")
         ]
     ])
@@ -200,28 +194,7 @@ async def select_plan_callback(client: Client, callback: CallbackQuery):
     await callback.message.edit_text(text, reply_markup=keyboard)
 
 
-@Client.on_callback_query(filters.regex(r"^pay_"))
-@handle_errors
-@require_auth
-async def process_payment_callback(client: Client, callback: CallbackQuery):
-    """Process payment for plan"""
-    await callback.answer()
     
-    plan_key = callback.data.split('_')[1]
-    
-    try:
-        # Create invoice
-        await payment_service.create_invoice(
-            callback.from_user.id,
-            plan_key,
-            callback.message.chat.id
-        )
-        
-        # Delete the message
-        await callback.message.delete()
-        
-    except Exception as e:
-        await callback.answer(f"❌ خطأ: {str(e)}", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("^settings_menu$"))

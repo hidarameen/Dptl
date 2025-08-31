@@ -1,6 +1,6 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
-yt-dlp==2024.1.13
+yt-dlp==2025.8.27
 aria2p==0.11.3
 asyncpg==0.29.0
 redis[hiredis]==5.0.1
@@ -17,4 +17,6 @@ apscheduler==3.10.4
 cryptography==41.0.7
 pillow==10.2.0
 matplotlib==3.8.2
+psutil==5.9.8
+=======
 psutil==5.9.8

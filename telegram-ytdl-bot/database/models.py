@@ -122,6 +122,7 @@ class Download(Base):
     
     # Additional metadata
     metadata = Column(JSON, default={})
+    extra_metadata = Column(JSON, default={})
     
     # Relationships
     user = relationship('User', back_populates='downloads')
@@ -160,6 +161,8 @@ class Payment(Base):
     
     # Additional data
     metadata = Column(JSON, default={})
+    extra_metadata = Column(JSON, default={})
+
     
     # Relationships
     user = relationship('User', back_populates='payments')

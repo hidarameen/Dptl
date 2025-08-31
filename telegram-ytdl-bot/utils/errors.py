@@ -11,6 +11,7 @@ from pyrogram.errors import (
     FloodWait, UserBlocked, UserDeactivated, ChatWriteForbidden,
     MessageNotModified, MessageIdInvalid, MessageDeleteForbidden,
     BadRequest, Unauthorized, Forbidden, NotFound, Conflict,
+    BadRequest, Unauthorized, Forbidden, RPCError, Conflict,
     ServerError, NetworkError
 )
 
@@ -236,4 +237,5 @@ def handle_errors(func):
             }
             await ErrorHandler.handle_error(e, client, update, context)
     
+    return wrapper
     return wrapper
